@@ -1,10 +1,10 @@
-============
+===========
 vmod_shield
-============
+===========
 
-----------------------
-Varnish Example Module
-----------------------
+---------------------
+Varnish Shield Module
+---------------------
 
 :Author: Martin Blix Grydeland
 :Date: 2011-12-09
@@ -19,40 +19,54 @@ import shield;
 DESCRIPTION
 ===========
 
+This vmod contains some routines that may be useful in guarding
+against malicious traffic on your Varnish server.
+
 FUNCTIONS
 =========
 
-hello
------
+conn_reset
+----------
 
 Prototype
-        ::
 
-                hello(STRING S)
+	::
+
+		conn_reset()
+
 Return value
-	STRING
-Description
-	Returns "Hello, " prepended to S
-Example
-        ::
 
-                set resp.http.hello = example.hello("World");
+	NONE
+
+Description
+
+	Sets SO_LINGER with a zero timeout on the client connection
+	and closes the socket to force a TCP RST. Also sets the
+	restarts counter to max_restarts, to force a vcl_error
+	situation.
+
+	Should only be called from vcl_recv{}, and will be a no-op if
+	called anywhere else.
+
+Example
+
+	::
+
+		sub vcl_recv {
+			if (req.url ~ "i-am-an-attacker") {
+				shield.conn_reset();
+			}
+		}
+
 
 INSTALLATION
 ============
 
-This is an example skeleton for developing out-of-tree Varnish
-vmods. It implements the "Hello, World!" as a vmod callback. Not
-particularly useful in good hello world tradition, but demonstrates how
-to get the glue around a vmod working.
+Usage
 
-The source tree is based on autotools to configure the building, and
-does also have the necessary bits in place to do functional unit tests
-using the varnishtest tool.
+	::
 
-Usage::
-
- ./configure VARNISHSRC=DIR [VMODDIR=DIR]
+		 ./configure VARNISHSRC=DIR [VMODDIR=DIR]
 
 `VARNISHSRC` is the directory of the Varnish source tree for which to
 compile your vmod. Both the `VARNISHSRC` and `VARNISHSRC/include`
@@ -68,25 +82,21 @@ Make targets:
 * make install - installs your vmod in `VMODDIR`
 * make check - runs the unit tests in ``src/tests/*.vtc``
 
-In your VCL you could then use this vmod along the following lines::
-        
-        import example;
+In your VCL you could then use this vmod along the following lines:
 
-        sub vcl_deliver {
-                # This sets resp.http.hello to "Hello, World"
-                set resp.http.hello = example.hello("World");
-        }
+	::
+
+		import shield;
 
 HISTORY
 =======
 
-This manual page was released as part of the libvmod-example package,
-demonstrating how to create an out-of-tree Varnish vmod.
+This manual page was released as part of the libvmod-shield package.
 
 COPYRIGHT
 =========
 
 This document is licensed under the same license as the
-libvmod-example project. See LICENSE for details.
+libvmod-shield project. See LICENSE for details.
 
 * Copyright (c) 2011 Varnish Software

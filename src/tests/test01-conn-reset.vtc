@@ -1,4 +1,4 @@
-varnishtest "Test shield vmod"
+varnishtest "Test vmod_shield conn_reset"
 
 server s1 {
        rxreq
@@ -7,11 +7,14 @@ server s1 {
 
 varnish v1 -vcl+backend {
 	import shield from "${vmod_topbuild}/src/.libs/libvmod_shield.so";
+
+	sub vcl_recv {
+		shield.conn_reset();
+	}
 } -start
 
 client c1 {
 	txreq -url "/"
-	rxresp
 }
 
 client c1 -run

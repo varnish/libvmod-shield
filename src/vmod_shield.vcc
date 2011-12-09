@@ -1,2 +1,3 @@
 Module shield
 Init init_function
+Function VOID conn_reset()
