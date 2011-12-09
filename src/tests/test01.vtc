@@ -1,4 +1,4 @@
-varnishtest "Test example vmod"
+varnishtest "Test shield vmod"
 
 server s1 {
        rxreq
@@ -6,17 +6,12 @@ server s1 {
 } -start
 
 varnish v1 -vcl+backend {
-	import example from "${vmod_topbuild}/src/.libs/libvmod_example.so";
-
-	sub vcl_deliver {
-		set resp.http.hello = example.hello("World");
-	}
+	import shield from "${vmod_topbuild}/src/.libs/libvmod_shield.so";
 } -start
 
 client c1 {
 	txreq -url "/"
 	rxresp
-	expect resp.http.hello == "Hello, World"
 }
 
 client c1 -run

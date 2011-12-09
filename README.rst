@@ -1,5 +1,5 @@
 ============
-vmod_example
+vmod_shield
 ============
 
 ----------------------
@@ -7,21 +7,17 @@ Varnish Example Module
 ----------------------
 
 :Author: Martin Blix Grydeland
-:Date: 2011-05-26
+:Date: 2011-12-09
 :Version: 1.0
 :Manual section: 3
 
 SYNOPSIS
 ========
 
-import example;
+import shield;
 
 DESCRIPTION
 ===========
-
-Example Varnish vmod demonstrating how to write an out-of-tree Varnish vmod.
-
-Implements the traditional Hello World as a vmod.
 
 FUNCTIONS
 =========
