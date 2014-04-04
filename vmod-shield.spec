@@ -1,6 +1,6 @@
 Summary: DDoS shield VMOD for Varnish
 Name: vmod-shield
-Version: 0.1
+Version: 0.2
 Release: 1%{?dist}
 License: BSD
 Group: System Environment/Daemons

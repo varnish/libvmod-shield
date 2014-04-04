@@ -8,7 +8,7 @@ Varnish Shield Module
 
 :Author: Martin Blix Grydeland
 :Date: 2011-12-09
-:Version: 1.0
+:Version: 0.2
 :Manual section: 3
 
 SYNOPSIS
@@ -99,4 +99,4 @@ COPYRIGHT
 This document is licensed under the same license as the
 libvmod-shield project. See LICENSE for details.
 
-* Copyright (c) 2011 Varnish Software
+* Copyright (c) 2011-2014 Varnish Software
