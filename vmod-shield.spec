@@ -1,4 +1,4 @@
-Summary: DDoS shield VMOD for Varnish
+Summary: DDoS shield VMOD for Varnish %{VARNISHVER}
 Name: vmod-shield
 Version: 0.2
 Release: 2%{?dist}
@@ -34,7 +34,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{_libdir}/varnish/vmods/
+%{_libdir}/varnis*/vmods/
 %doc /usr/share/doc/%{name}/*
 %{_mandir}/man?/*
 
