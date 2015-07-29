@@ -1,7 +1,8 @@
 #include <stdlib.h>
 
+#include "vcl.h"
 #include "vrt.h"
-#include "bin/varnishd/cache.h"
+#include "cache/cache.h"
 
 #include "vcc_if.h"
 
@@ -11,19 +12,27 @@ init_function(struct vmod_priv *priv, const struct VCL_conf *conf)
 	return (0);
 }
 
-void
-vmod_conn_reset(struct sess *sp)
+VCL_VOID
+vmod_conn_reset(const struct vrt_ctx *ctx)
 {
-	if (sp->step != STP_RECV)
+	struct linger lin;
+
+	if (ctx->method != VCL_MET_RECV) {
+		VSLb(ctx->vsl, SLT_VCL_Error,
+		    "This function is only available in vcl_recv");
 		return;
-	if (sp->fd < 0)
+	}
+
+	if (ctx->req->sp->fd < 0)
 		return;
 
 	/* Force a path to vcl_error */
-	sp->restarts = params->max_restarts;
+	ctx->req->restarts = cache_param->max_restarts;
 	/* Set SO_LINGER with zero timeout before closing, to force a
 	 * RST */
-	VTCP_linger(sp->fd, 1);
-	/* Close the connection */
-	vca_close_session(sp, "vmod_shield conn_reset");
+        memset(&lin, 0, sizeof lin);
+        lin.l_onoff = 1;
+	setsockopt(ctx->req->sp->fd, SOL_SOCKET, SO_LINGER, &lin, sizeof lin);
+      	/* Close the connection */
+	SES_Close(ctx->req->sp, SC_RESP_CLOSE);
 }
