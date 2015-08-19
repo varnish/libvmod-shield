@@ -7,7 +7,7 @@
 #include "vcc_if.h"
 
 VCL_VOID
-vmod_conn_reset(const struct vrt_ctx *ctx)
+vmod_conn_reset(VRT_CTX)
 {
 	struct linger lin;
 
