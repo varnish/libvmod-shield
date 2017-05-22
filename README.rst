@@ -11,6 +11,11 @@ Varnish Shield Module
 :Version: 0.2
 :Manual section: 3
 
+END OF LIFE
+===========
+
+This vmod was developed for Varnish 3, and will only work with Varnish 3. No further development will be done to this vmod.
+
 SYNOPSIS
 ========
 
